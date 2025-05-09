@@ -9,7 +9,6 @@ public partial class AthleteControl : UserControl
 {
     private readonly Ellipse _athleteCircle;
     private readonly TextBlock _athleteNameAbove;
-    private readonly Ellipse _injuryIndicator;
     private readonly Path _trophyIcon;
 
     public AthleteControl()
@@ -18,7 +17,6 @@ public partial class AthleteControl : UserControl
         
         _athleteCircle = this.FindControl<Ellipse>("AthleteCircle")!;
         _athleteNameAbove = this.FindControl<TextBlock>("AthleteNameAbove")!;
-        // _injuryIndicator = this.FindControl<Ellipse>("InjuryIndicator")!;
         _trophyIcon = this.FindControl<Path>("TrophyIcon")!;
 
         if (DataContext is Athlete athlete)
@@ -34,7 +32,6 @@ public partial class AthleteControl : UserControl
 
     public void SetInjured(bool isInjured)
     {
-        // _injuryIndicator.IsVisible = isInjured;
         _athleteCircle.Fill = isInjured ? Brushes.Red : Brushes.Blue;
     }
 
