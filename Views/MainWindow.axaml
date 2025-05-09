@@ -1,0 +1,72 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Task3.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:shapes="using:Avalonia.Controls.Shapes"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Task3.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Спортивные соревнования"
+        Background="White"
+        DataContext="MainWindowViewModel">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="10">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
+            <Button Content="Добавить спортсмена" 
+                    Click="OnAddAthleteClick"
+                    Background="LightGray"
+                    Foreground="Black"
+                    Padding="10,5">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover">
+                        <Setter Property="Background" Value="Gray"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                </Button.Styles>
+            </Button>
+            <Button Content="Начать соревнование" 
+                    Click="OnStartCompetitionClick"
+                    Background="LightGray"
+                    Foreground="Black"
+                    Padding="10,5">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover">
+                        <Setter Property="Background" Value="Gray"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                </Button.Styles>
+            </Button>
+        </StackPanel>
+
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,5">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <Canvas Name="RaceTrack" Width="800" Height="200" Background="White">
+                    <!-- Стартовая линия -->
+                    <shapes:Line StartPoint="0,50" EndPoint="0,150" 
+                          Stroke="Green" StrokeThickness="3"/>
+                    <TextBlock Text="СТАРТ" Canvas.Left="10" Canvas.Top="30"
+                             Foreground="Green" FontWeight="Bold"/>
+                    
+                    <!-- Финишная линия -->
+                    <shapes:Line StartPoint="750,50" EndPoint="750,150" 
+                          Stroke="Red" StrokeThickness="3"/>
+                    <TextBlock Text="ФИНИШ" Canvas.Left="760" Canvas.Top="30"
+                             Foreground="Red" FontWeight="Bold"/>
+                    
+                    <!-- Дорожка -->
+                    <shapes:Line StartPoint="0,100" EndPoint="800,100" 
+                          Stroke="Gray" StrokeThickness="1" StrokeDashArray="5,5"/>
+                </Canvas>
+            </ScrollViewer>
+        </Border>
+
+        <TextBlock Grid.Row="2" Text="{Binding StatusMessage}" Margin="0,10,0,0"/>
+    </Grid>
+
+</Window>
