@@ -76,6 +76,7 @@ public partial class MainWindow : Window
 
             viewModel.StartCompetition();
             var random = new Random();
+            bool hasWinner = false;
 
             while (viewModel.IsCompetitionRunning)
             {
@@ -85,11 +86,22 @@ public partial class MainWindow : Window
                     {
                         var athlete = viewModel.Athletes[i];
                         var control = _athleteControls[i];
+                        var currentPosition = Canvas.GetLeft(control);
 
+                        // Если спортсмен уже на финише, пропускаем его
+                        if (currentPosition >= 750)
+                        {
+                            continue;
+                        }
+
+                        // Если спортсмен не травмирован, двигаем его
                         if (!athlete.IsInjured)
                         {
-                            var currentPosition = Canvas.GetLeft(control);
                             var newPosition = currentPosition + random.Next(5, 15);
+                            if (newPosition > 750)
+                            {
+                                newPosition = 750;
+                            }
                             control.MoveTo(newPosition);
 
                             // Проверка на получение травмы
@@ -98,26 +110,47 @@ public partial class MainWindow : Window
                                 control.SetInjured(true);
                                 if (DataContext is MainWindowViewModel vm)
                                 {
-                                    // Запускаем лечение асинхронно
                                     _ = Task.Run(async () =>
                                     {
                                         await vm.TreatAthlete(athlete);
                                         await Dispatcher.UIThread.InvokeAsync(() =>
                                         {
+                                            athlete.IsInjured = false;
                                             control.SetInjured(false);
                                         });
                                     });
                                 }
                             }
 
-                            if (newPosition >= 750 && !athlete.HasWon)
+                            // Отмечаем победителя
+                            if (newPosition >= 750 && !hasWinner)
                             {
+                                hasWinner = true;
                                 athlete.HasWon = true;
                                 control.SetWinner(true);
                                 viewModel.StatusMessage = $"Победитель: {athlete.Name}!";
-                                viewModel.EndCompetition();
                             }
                         }
+                    }
+
+                    // Проверяем, все ли спортсмены достигли финиша
+                    bool allFinished = true;
+                    for (int i = 0; i < viewModel.Athletes.Count; i++)
+                    {
+                        var athlete = viewModel.Athletes[i];
+                        var control = _athleteControls[i];
+                        var position = Canvas.GetLeft(control);
+                        
+                        if (position < 750)
+                        {
+                            allFinished = false;
+                            break;
+                        }
+                    }
+                    
+                    if (allFinished)
+                    {
+                        viewModel.EndCompetition();
                     }
                 });
 
