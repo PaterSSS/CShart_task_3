@@ -22,6 +22,8 @@ namespace Task3.ViewModels
         private readonly Random _random = new();
         private bool _hasWinner;
         private readonly List<AthleteControl> _athleteControls = new();
+        public ObservableCollection<Athlete> Athletes { get; } = new();
+        
 
         public string StatusMessage
         {
@@ -43,7 +45,6 @@ namespace Task3.ViewModels
             }
         }
 
-        public ObservableCollection<Athlete> Athletes { get; } = new();
 
         public MainWindowViewModel(IDoctor doctor)
         {

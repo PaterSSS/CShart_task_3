@@ -16,9 +16,7 @@ namespace Task3.Models
         public async Task TreatAthlete(Athlete athlete)
         {
             if (!athlete.IsInjured) return;
-
-            // Имитация процесса лечения
-            await Task.Delay(2000);
+            await Task.Delay(1000);
             athlete.Heal();
             TreatmentCompleted?.Invoke(this, $"{Name} вылечил {athlete.Name}!");
         }

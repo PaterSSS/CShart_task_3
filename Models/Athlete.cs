@@ -80,7 +80,6 @@ namespace Task3.Models
             {
                 await _injurySemaphore.WaitAsync();
                 
-                // 5% шанс получить травму
                 if (_random.Next(100) < 5)
                 {
                     IsInjured = true;
